@@ -35,15 +35,22 @@ namespace jwtcpp {
 
 	    return svf.GetLastResult();
     }
+    
+    string JWT::getAlgorithm(){
+      return algorithm;
+     }
+    string JWT::getPayload(){
+      return payload;
+     } 
 
     JWT* parse(const string& jwt)
     {
+        cout << "PARSE IS CALLED" << endl;
         size_t pos;
 
         // extracting the algorithm, payload, signature and data
         char* tok = strtok((char*) jwt.c_str(), ".");
         string raw_algorithm = (string) tok;
-
         tok = strtok(NULL, ".");
         string raw_payload = (string) tok;
 
@@ -54,7 +61,6 @@ namespace jwtcpp {
 
         // decode json values for the algorithm and the payload
         json_t* algorithm_json = decodeJSONBytes(raw_algorithm);
-
         // check that the "alg" parameter is present. If not, throw an
         // exception
         json_t* algorithm_ = json_object_get(algorithm_json, "alg");
