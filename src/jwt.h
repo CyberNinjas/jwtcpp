@@ -44,6 +44,20 @@ namespace jwtcpp{
 			 * @return bool True if the signature is correct, false otherwise.
 			 **/
 			bool checkSignature(const string& key);
+                      
+                       /**
+                         * Getter for the stuff that makes up the jwt token.
+                         *
+                         * @return string the algorithm used for encryption
+                         **/
+                        string getAlgorithm();
+
+                       /**
+                         * Getter for the payload found in the token.
+                         * 
+                         * @return json_t* the payload
+                         **/
+                        json_t* getPayload();
 	};
 
     /**

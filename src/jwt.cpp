@@ -35,17 +35,16 @@ namespace jwtcpp {
 
 	    return svf.GetLastResult();
     }
-    
+
     string JWT::getAlgorithm(){
       return algorithm;
      }
-    string JWT::getPayload(){
+    json_t* JWT::getPayload(){
       return payload;
-     } 
+      }
 
     JWT* parse(const string& jwt)
     {
-        cout << "PARSE IS CALLED" << endl;
         size_t pos;
 
         // extracting the algorithm, payload, signature and data
