@@ -1,4 +1,4 @@
-BINARIES = jwtcpp tests
+BINARIES = jwtcpp
 SOURCES = jwt.cpp utils.cpp
 TARGETS = $(BINARIES)
 
@@ -13,10 +13,7 @@ CXXFLAGS += $(CFLAGS)
 all: $(TARGETS)
 
 jwtcpp: clean
-	g++ -o jwtcpp jwt.cpp utils.cpp -ljansson -lcryptopp -lpthread $(CXXFLAGS)
-
-tests: clean
-	g++ -o tests jwt.cpp utils.cpp tests.cpp -ljansson -lcryptopp -lpthread -lunittest++ $(CXXFLAGS)
+	g++ -c jwt.cpp utils.cpp -ljansson -lcryptopp -lpthread $(CXXFLAGS)
 
 clean: 
 	rm -f *.exe* *.o $(TARGETS) *.bak *~
