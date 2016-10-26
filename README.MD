@@ -21,7 +21,7 @@ You need to have the following library installed on your system:
 * Cryptopp for the cryptographic functions.
 * Nhlohmann's brilliant [json][json_link] library for parsing decoded jwts. 
 
-[json_link]: https://nhlohmann.github.io/json/
+[json_link]: https://nlohmann.github.io/json/
 How to use it?
 ==============
 
