@@ -1,9 +1,5 @@
 #include "cryptopp/base64.h"
 
-extern "C" {
-#include "jansson.h"
-}
-
 using namespace CryptoPP;
 using namespace std;
 
@@ -32,23 +28,6 @@ string encodeBase64(string value){
     // remove the extra "=" appended by the base64 convertion
     out.erase(out.find("="));
     return out;
-}
-
-json_t* decodeJSONBytes(string input){
-    string decoded = decodeBase64(input.c_str());
-    json_error_t error;
-    json_t* json = json_loads(decoded.c_str(), 0, &error);
-
-    if (!json){
-        fprintf(stderr, "error: on line %d: %s\n", error.line, error.text);
-        // XXX should we throw an exception here?
-    }
-
-    return json;
-}
-
-string encodeJSONBytes(json_t* input){
-    return encodeBase64((string) json_dumps(input, 0));
 }
 
 }

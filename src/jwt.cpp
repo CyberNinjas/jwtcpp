@@ -39,6 +39,7 @@ namespace jwtcpp {
      string JWT::getAlgorithm(){
       return algorithm;
      }
+     
     nlohmann::json JWT::getPayload(){
       return payload;
       }
@@ -82,42 +83,8 @@ namespace jwtcpp {
                     map<string, string>* payloadMap)
     {
         // encode the algorithm in bytes
-        json_t* jsonAlg = json_object();
-        json_object_set(jsonAlg, "alg", json_string(algorithm.c_str()));
-        string alg = encodeJSONBytes(jsonAlg);
-
-        // loop on the payload map to create a json_object from it
-        json_t* jsonPayload = json_object();
-
-        if (payloadMap->size() > 0){
-            map<string, string>::iterator iter;
-
-            for(iter = payloadMap->begin(); iter != payloadMap->end(); iter++){
-                json_object_set(jsonPayload, (*iter).first.c_str(),
-                                json_string((*iter).second.c_str()));
-            }
-
-        }
-
-        // encode the payload in bytes
-        string payload = encodeJSONBytes(jsonPayload);
-
-        // get a random number generator
-        AutoSeededRandomPool rng;
-
-        // sign the data with the key and the algorithm name.
-        // XXX handle different algos
-        DSA::PrivateKey privateKey;
-        privateKey.Load(StringStore(key).Ref());
-
-        DSA::Signer signer(privateKey);
-
-        cout << alg + "." + payload << endl;
-
-        string signature;
-        StringSource(alg + "." + payload, true,
-                     new SignerFilter(rng, signer, new StringSink(signature)));
-
-        return alg + "." + payload + "." + signature;
+        nlohmann::json jsonAlg;
+        jsonAlg["alg"] = algorithm.c_str();
+        return "TBD";
     }
 }
