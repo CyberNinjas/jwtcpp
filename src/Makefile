@@ -1,4 +1,4 @@
-BINARIES = jwtcpp tests
+BINARIES = jwtcpp
 SOURCES = main.cpp jwt.cpp utils.cpp
 TARGETS = $(BINARIES)
 

@@ -1,5 +1,5 @@
 #include "string.h"
-
+#include "json.hpp"
 #include "jwt.h"
 #include "utils.h"
 #include "exceptions.h"
@@ -13,8 +13,8 @@ using namespace CryptoPP;
 
 namespace jwtcpp {
 
-    JWT::JWT(const string& algorithm, json_t* payload, const string& signature,
-             const string& signed_data)
+    JWT::JWT(string algorithm, nlohmann::json payload, string signature,
+             string signed_data)
     {
         this->algorithm = algorithm;
         this->payload = payload;
@@ -36,20 +36,21 @@ namespace jwtcpp {
 	    return svf.GetLastResult();
     }
 
-    string JWT::getAlgorithm(){
+     string JWT::getAlgorithm(){
       return algorithm;
      }
-    json_t* JWT::getPayload(){
+    nlohmann::json JWT::getPayload(){
       return payload;
       }
 
-    JWT* parse(const string& jwt)
+        JWT* parse(const string& jwt)
     {
         size_t pos;
 
         // extracting the algorithm, payload, signature and data
         char* tok = strtok((char*) jwt.c_str(), ".");
         string raw_algorithm = (string) tok;
+
         tok = strtok(NULL, ".");
         string raw_payload = (string) tok;
 
@@ -59,19 +60,20 @@ namespace jwtcpp {
         string signed_data = raw_algorithm + "." + raw_payload;
 
         // decode json values for the algorithm and the payload
-        json_t* algorithm_json = decodeJSONBytes(raw_algorithm);
+        string unparsed_header = decodeBase64(raw_algorithm);
+
+        auto header = nlohmann::json::parse(unparsed_header);
+
         // check that the "alg" parameter is present. If not, throw an
         // exception
-        json_t* algorithm_ = json_object_get(algorithm_json, "alg");
-        if (algorithm_ == NULL){
+        string algorithm = header["alg"];
+        if (algorithm.empty()){
             ParsingError e;
             throw e;
         }
 
-        string algorithm = json_string_value(algorithm_);
-
-        json_t* payload = decodeJSONBytes(raw_payload);
-
+        string unparsed_payload = decodeBase64(raw_payload);
+        auto payload = nlohmann::json::parse(unparsed_payload);
         JWT* obj = new JWT(algorithm, payload, signature, signed_data);
         return obj;
     }

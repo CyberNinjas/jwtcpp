@@ -1,9 +1,6 @@
 #include <iostream>
 #include <map>
-
-extern "C" {
-#include "jansson.h"
-}
+#include "json.hpp"
 
 using namespace std;
 
@@ -19,7 +16,7 @@ namespace jwtcpp{
 	class JWT{
 		private:
 			string algorithm;
-			json_t* payload;
+			nlohmann::json payload;
 			string signature;
 			string signed_data;
 
@@ -33,8 +30,8 @@ namespace jwtcpp{
 			 * @param string the signature
 			 * @param string the signed data
 			 **/
-			JWT(const string& algorithm, json_t* payload, const string& signature,
-				const string& signed_data);
+			JWT(const string algorithm, nlohmann::json payload, const string signature,
+				const string signed_data);
 
 			/**
 			 * Check the current token against the given public key.
@@ -55,9 +52,9 @@ namespace jwtcpp{
                        /**
                          * Getter for the payload found in the token.
                          * 
-                         * @return json_t* the payload
+                         * @return nlohmann::json the payload
                          **/
-                        json_t* getPayload();
+                        nlohmann::json getPayload();
 	};
 
     /**
