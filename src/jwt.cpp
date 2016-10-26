@@ -37,12 +37,19 @@ namespace jwtcpp {
     }
 
      string JWT::getAlgorithm(){
-      return algorithm;
+      return this->algorithm;
      }
-     
+
     nlohmann::json JWT::getPayload(){
-      return payload;
+      return this->payload;
       }
+    
+    string JWT::fromPayload(string key){
+        if (this->payload[key] == NULL){
+            return NULL;
+        }
+        return this->payload[key];
+    }
 
         JWT* parse(const string& jwt)
     {
@@ -54,9 +61,13 @@ namespace jwtcpp {
 
         tok = strtok(NULL, ".");
         string raw_payload = (string) tok;
-
+        string signature;
         tok = strtok(NULL, ".");
-        string signature = (string) tok;
+        if (tok){
+            signature = (string) tok;
+        }else{
+            cout << "[*] WARNING: Your token is unsigned!\n[*] Processing without signature..." << endl;
+        }
 
         string signed_data = raw_algorithm + "." + raw_payload;
 

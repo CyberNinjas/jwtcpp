@@ -55,6 +55,15 @@ namespace jwtcpp{
                          * @return nlohmann::json the payload
                          **/
                         nlohmann::json getPayload();
+
+					  /*
+					   * Getter for specific values from the payload.
+					   * 
+					   * @param string key the slot you're accessing from the payload
+					   *
+					   * @return string the value of the value assoiate with the provided key.
+					   **/
+					   string fromPayload(string key);
 	};
 
     /**
